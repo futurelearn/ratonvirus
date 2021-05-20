@@ -61,7 +61,12 @@ describe AntivirusValidator do
         expect(scanner).not_to receive(:virus?)
       end
 
-      it { is_expected.to be_valid }
+      it "adds correct error message" do
+        expect(subject).not_to be_valid
+        expect(subject.errors[:file]).to contain_exactly(
+          "could not process the file. Please try again later."
+        )
+      end
     end
 
     context "with available scanner" do
