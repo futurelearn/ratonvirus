@@ -91,15 +91,6 @@ describe Ratonvirus do
       expect(described_class.scanner).to be_a(described_class::Scanner::Test)
     end
 
-    it "returns a scanner configured as a class" do
-      scanner = described_class::Scanner::Test.new
-      described_class.configure do |config|
-        config.scanner = scanner
-      end
-
-      expect(described_class.scanner).to equal(scanner)
-    end
-
     it "allows reconfiguring a scanner" do
       described_class.configure do |config|
         config.scanner = :eicar
@@ -133,16 +124,6 @@ describe Ratonvirus do
       scanner = described_class.scanner
       described_class.destroy_scanner
       expect(described_class.scanner).not_to equal(scanner)
-
-      # Destroying a class defined scanner
-      scanner = described_class::Scanner::Test.new
-      described_class.configure do |config|
-        config.scanner = scanner
-      end
-
-      described_class.destroy_scanner
-      expect(described_class.scanner).not_to equal(scanner)
-      expect(described_class.scanner).to be_a(described_class::Scanner::Test)
     end
   end
 
@@ -155,15 +136,6 @@ describe Ratonvirus do
       expect(described_class.storage).to be_a(
         described_class::Storage::Filepath
       )
-    end
-
-    it "returns a storage configured as a class" do
-      storage = described_class::Storage::Test.new
-      described_class.configure do |config|
-        config.storage = storage
-      end
-
-      expect(described_class.storage).to equal(storage)
     end
 
     it "allows reconfiguring a storage" do
@@ -199,16 +171,6 @@ describe Ratonvirus do
       storage = described_class.storage
       described_class.destroy_storage
       expect(described_class.storage).not_to equal(storage)
-
-      # Destroying a class defined storage
-      storage = described_class::Storage::Test.new
-      described_class.configure do |config|
-        config.storage = storage
-      end
-
-      described_class.destroy_storage
-      expect(described_class.storage).not_to equal(storage)
-      expect(described_class.storage).to be_a(described_class::Storage::Test)
     end
   end
 end

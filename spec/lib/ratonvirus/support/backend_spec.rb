@@ -72,24 +72,6 @@ describe Ratonvirus::Support::Backend do
   describe ".set_backend" do
     let(:method) { RatonvirusTest.method(:set_backend) }
 
-    context "with Class backend_value" do
-      it "sets the backend correctly" do
-        cls = RatonvirusTest::Foo::Base.new
-
-        expect(RatonvirusTest).to receive(:instance_variable_set).with(
-          :@test,
-          cls
-        ).and_call_original
-        expect(RatonvirusTest).to receive(:instance_variable_set).with(
-          :@test_defs,
-          klass: RatonvirusTest::Foo::Base,
-          config: {}
-        ).and_call_original
-
-        method.call(backend_type, namespace, cls)
-      end
-    end
-
     context "with Array backend_value" do
       context "with config" do
         it "sets the backend correctly" do

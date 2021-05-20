@@ -146,6 +146,7 @@ module Ratonvirus
         base_class = backend_class(backend_cls, "Base")
 
         if backend_value.is_a?(base_class)
+          fail 'Our fork breaks this configuration method. Please avoid using.'
           # Set the instance
           instance_variable_set(:"@#{backend_type}", backend_value)
 
