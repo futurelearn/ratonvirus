@@ -29,33 +29,18 @@ describe Ratonvirus::Scanner::Base do
   end
 
   describe "#setup" do
-    context "when force_availability is true" do
-      let(:config) { { force_availability: true } }
+    it "sets availability to true when scanner is executable" do
+      expect(described_class).to receive(:executable?).and_return(true)
 
-      it "sets availability to true" do
-        expect(described_class).not_to receive(:executable?)
-
-        subject
-        expect(subject.available?).to be(true)
-      end
+      subject
+      expect(subject.available?).to be(true)
     end
 
-    context "when force_availability is false" do
-      let(:config) { { force_availability: false } }
+    it "sets availability to false when scanner is not executable" do
+      expect(described_class).to receive(:executable?).and_return(false)
 
-      it "sets availability to true when scanner is executable" do
-        expect(described_class).to receive(:executable?).and_return(true)
-
-        subject
-        expect(subject.available?).to be(true)
-      end
-
-      it "sets availability to false when scanner is not executable" do
-        expect(described_class).to receive(:executable?).and_return(false)
-
-        subject
-        expect(subject.available?).to be(false)
-      end
+      subject
+      expect(subject.available?).to be(false)
     end
   end
 
