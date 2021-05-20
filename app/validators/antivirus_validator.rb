@@ -22,7 +22,7 @@ class AntivirusValidator < ActiveModel::EachValidator
       else
         record.errors.add attribute, :antivirus_virus_detected
       end
-    else
+    elsif scanner.config[:force_availability]
       record.errors.add attribute, :antivirus_not_installed
     end
   end
