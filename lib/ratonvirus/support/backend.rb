@@ -89,7 +89,7 @@ module Ratonvirus
         class_eval <<-CODE, __FILE__, __LINE__ + 1
           # Getter for #{backend_type}
           def self.#{backend_type}
-            @#{backend_type} ||= create_#{backend_type}
+            Thread.current[:ratonvirus_#{backend_type}] ||= create_#{backend_type}
           end
 
           # Setter for #{backend_type}
@@ -104,7 +104,7 @@ module Ratonvirus
           # Destroys the currently active #{backend_type}.
           # The #{backend_type} is re-initialized when the getter is called.
           def self.destroy_#{backend_type}
-            @#{backend_type} = nil
+            Thread.current[:ratonvirus_#{backend_type}] = nil
           end
 
           # Creates a new backend instance

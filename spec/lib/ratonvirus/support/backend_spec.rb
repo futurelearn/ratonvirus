@@ -157,6 +157,7 @@ describe Ratonvirus::Support::Backend do
     before do
       subject.extend described_class
       subject.send(:define_backend, backend_type, namespace)
+      Thread.current[:ratonvirus_test] = nil
     end
 
     it "defines all expected methods" do
@@ -170,11 +171,12 @@ describe Ratonvirus::Support::Backend do
     describe ".test" do
       it "defines an instance variable on first call" do
         backend = RatonvirusTest::Foo::Base.new
-        expect(subject).to receive(:create_test).and_return(backend)
-        expect(subject.instance_variable_get(:@test)).to be_nil
+        allow(subject).to receive(:create_test).and_return(backend)
+        expect(subject).to receive(:create_test)
+        expect(Thread.current[:ratonvirus_test]).to be_nil
 
         subject.test
-        expect(subject.instance_variable_get(:@test)).to equal(backend)
+        expect(Thread.current[:ratonvirus_test]).to equal(backend)
       end
 
       it "defines an instance variable only on first call" do
@@ -200,10 +202,10 @@ describe Ratonvirus::Support::Backend do
 
     describe ".destroy_test" do
       it "unsets the backend variable" do
-        subject.instance_variable_set(:@test, true)
+        Thread.current[:ratonvirus_test] = true
         subject.destroy_test
 
-        expect(subject.instance_variable_get(:@test)).to be_nil
+        expect(Thread.current[:ratonvirus_test]).to be_nil
       end
     end
 
