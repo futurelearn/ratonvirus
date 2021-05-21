@@ -62,7 +62,7 @@ describe Ratonvirus::Scanner::Base do
 
   describe "#default_config" do
     let(:defaults) { subject.send(:default_config) }
-    let(:expected) { { force_availability: false } }
+    let(:expected) { { force_availability: true } }
 
     it "has default configuration" do
       expect(subject.config).to include(defaults)
