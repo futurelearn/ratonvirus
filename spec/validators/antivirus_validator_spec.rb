@@ -22,6 +22,12 @@ describe AntivirusValidator do
   end
   let(:subject) { validatable.new }
   let(:storage) { double }
+  let(:scanner) { double }
+
+  before do
+    allow(scanner).to receive(:config).and_return({ force_availability: true })
+    allow(Ratonvirus).to receive(:scanner).and_return(scanner).ordered
+  end
 
   context "when storage does not accept the resource" do
     before do
@@ -46,24 +52,21 @@ describe AntivirusValidator do
   end
 
   context "when file is changed and accepted" do
-    let(:scanner) { double }
-
     before do
       expect(Ratonvirus).to receive(:storage).and_return(storage).ordered
       expect(storage).to receive(:accept?).and_return(true).ordered
       expect(storage).to receive(:changed?).and_return(true).ordered
-      expect(Ratonvirus).to receive(:scanner).and_return(scanner).ordered
+
     end
 
     context "with unavailable scanner" do
       before do
-        expect(scanner).to receive(:available?).and_return(false).ordered
         expect(scanner).not_to receive(:virus?)
       end
 
       context "with force_availability set to true" do
         before do
-          expect(scanner).to receive(:config).and_return({ force_availability: true })
+          expect(scanner).to receive(:available?).and_return(false).ordered
         end
 
         it "adds correct error message" do
