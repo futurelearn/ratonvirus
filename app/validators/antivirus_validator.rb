@@ -11,16 +11,19 @@ class AntivirusValidator < ActiveModel::EachValidator
 
     # Only scan if the scanner is available
     scanner = Ratonvirus.scanner
-    return unless scanner.available?
 
-    return unless scanner.virus?(value)
+    if scanner.available?
+      return unless scanner.virus?(value)
 
-    if scanner.errors.any?
-      scanner.errors.each do |err|
-        record.errors.add attribute, err
+      if scanner.errors.any?
+        scanner.errors.each do |err|
+          record.errors.add attribute, err
+        end
+      else
+        record.errors.add attribute, :antivirus_virus_detected
       end
-    else
-      record.errors.add attribute, :antivirus_virus_detected
+    elsif scanner.config[:force_availability]
+      record.errors.add attribute, :antivirus_not_installed
     end
   end
 end

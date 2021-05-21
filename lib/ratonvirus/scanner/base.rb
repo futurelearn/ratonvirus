@@ -57,11 +57,7 @@ module Ratonvirus
       # This method can be overridden in the scanner implementations in case
       # the setup needs to be customized.
       def setup
-        if config[:force_availability]
-          @available = true
-        else
-          available?
-        end
+        available?
       end
 
       def available?

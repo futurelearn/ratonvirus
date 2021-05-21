@@ -4,3 +4,4 @@ sv:
       antivirus_virus_detected: 'innehåller ett virus'
       antivirus_client_error: 'kunde inte behandlas för virusskanning'
       antivirus_file_not_found: 'kunde inte hittas för virusskanning'
+      antivirus_not_installed: 'kunde inte bearbeta filen. Vänligen försök igen senare.'
