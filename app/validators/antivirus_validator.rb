@@ -9,8 +9,9 @@ class AntivirusValidator < ActiveModel::EachValidator
     return unless storage.accept?(value)
     return unless storage.changed?(record, attribute)
 
-    # Only scan if the scanner is available
+    # Only scan if we expect the antivirus to be running, e.g. non-development environments
     scanner = Ratonvirus.scanner
+    return unless scanner.config[:force_availability]
 
     if scanner.available?
       return unless scanner.virus?(value)
@@ -22,7 +23,7 @@ class AntivirusValidator < ActiveModel::EachValidator
       else
         record.errors.add attribute, :antivirus_virus_detected
       end
-    elsif scanner.config[:force_availability]
+    else
       record.errors.add attribute, :antivirus_not_installed
     end
   end

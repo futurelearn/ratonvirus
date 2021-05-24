@@ -113,7 +113,7 @@ module Ratonvirus
       protected
 
       def default_config
-        { force_availability: false }
+        { force_availability: true }
       end
 
       def storage
